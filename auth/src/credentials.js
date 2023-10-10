@@ -5,10 +5,12 @@ const JWT_ACCESS_SECRET =
   process.env.JWT_ACCESS_SECRET || "some_jwt_access_secret";
 const JWT_REFRESH_SECRET =
   process.env.JWT_REFRESH_SECRET || "some_jwt_refresh_secret";
-
+const MONGO_URL =
+  "mongodb+srv://emilevi4:QKNlcjPJe7LyHxq6@my-cluster.x0cjd1e.mongodb.net/?retryWrites=true&w=majority";
 module.exports = {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   JWT_ACCESS_SECRET,
   JWT_REFRESH_SECRET,
+  MONGO_URL,
 };

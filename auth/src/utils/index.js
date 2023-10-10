@@ -5,6 +5,9 @@ const getTokens = (userData) => {
   if (userData.password) {
     delete userData.password;
   }
+  if (userData.salt) {
+    delete userData.salt;
+  }
   const accessToken = jwt.sign({ userData }, JWT_ACCESS_SECRET, {
     expiresIn: "15m",
   });
