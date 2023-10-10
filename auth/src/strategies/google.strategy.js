@@ -16,7 +16,7 @@ const googleStrategy = new GoogleStrategy(
     if (!profile || !profile.id) {
       return done(new Error("Google profile ID not found"), null);
     }
-
+    console.log(profile);
     try {
       let user = await User.findOne({ providerId: profile.id });
 
