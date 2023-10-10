@@ -1,7 +1,7 @@
 const { JWT_ACCESS_SECRET } = require("../credentials");
 const jwt = require("jsonwebtoken");
 
-const authenticateAccessToken = (req, res, next) => {
+const authenticateAccessTokenMiddleware = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -23,4 +23,4 @@ const authenticateAccessToken = (req, res, next) => {
   });
 };
 
-module.exports = authenticateAccessToken;
+module.exports = authenticateAccessTokenMiddleware;

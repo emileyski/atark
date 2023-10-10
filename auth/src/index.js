@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const { JWT_REFRESH_SECRET, MONGO_URL } = require("./credentials");
 const googleStrategy = require("./strategies/google.strategy");
 const getTokens = require("./utils");
-const authenticateAccessToken = require("./middlewares/authenticate-access-token.middleware");
+const authenticateAccessTokenMiddleware = require("./middlewares/authenticate-access-token.middleware");
 const localStrategy = require("./strategies/local.strategy");
 const User = require("./models/User");
 var cookieParser = require("cookie-parser");
@@ -39,7 +39,7 @@ app.get(
 );
 
 //путь защищен с помощью authenticateAccessToken
-app.get("/protected-route", authenticateAccessToken, (req, res) => {
+app.get("/protected-route", authenticateAccessTokenMiddleware, (req, res) => {
   res.json({ message: "This is a protected route", user: req.user.userData });
 });
 
