@@ -5,7 +5,7 @@ const userSchema = new Schema(
   {
     providerName: {
       type: String,
-      enum: ["local", "google", "facebook"],
+      enum: ["local", "google", "github"],
       required: true,
       default: "local",
     },

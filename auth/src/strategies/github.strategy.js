@@ -1,22 +1,24 @@
-const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
+const { Strategy: GithubStrategy } = require("passport-github2");
 const User = require("../models/User");
 const getTokens = require("../utils");
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = require("../credentials");
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require("../credentials");
 
-const googleStrategy = new GoogleStrategy(
+const githubStrategy = new GithubStrategy(
   {
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/callback",
+    clientID: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/github/callback",
     session: false,
-    // passReqToCallback: true,
     scope: ["profile", "user:email"],
   },
-  async (googleAccessToken, googleRefreshToken, profile, done) => {
+  async function (accessToken, refreshToken, profile, done) {
     if (!profile || !profile.id) {
-      return done(new Error("Google profile ID not found"), null);
+      return done(new Error("Github profile ID not found"), null);
     }
+
     // console.log(profile);
+    // return done(null, profile);
+
     try {
       let user = await User.findOne({ providerId: profile.id });
 
@@ -28,9 +30,8 @@ const googleStrategy = new GoogleStrategy(
 
         await user.save();
       } else {
-        // Если пользователь не существует, создайте новый инстанс пользователя и сохраните его в базе данных
         user = new User({
-          providerName: "google", // Установите соответствующий провайдер
+          providerName: "github", // Установите соответствующий провайдер
           providerId: profile.id,
           displayName: profile.displayName,
           email: profile.emails[0].value,
@@ -39,8 +40,6 @@ const googleStrategy = new GoogleStrategy(
 
         await user.save();
       }
-
-      //   console.log(user);
 
       const { accessToken, refreshToken } = getTokens(user);
 
@@ -55,4 +54,4 @@ const googleStrategy = new GoogleStrategy(
   }
 );
 
-module.exports = googleStrategy;
+module.exports = githubStrategy;

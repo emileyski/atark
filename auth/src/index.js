@@ -9,6 +9,7 @@ const localStrategy = require("./strategies/local.strategy");
 const User = require("./models/User");
 var cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const githubStrategy = require("./strategies/github.strategy");
 
 const app = express();
 
@@ -18,10 +19,30 @@ app.use(passport.initialize());
 
 passport.use(googleStrategy);
 passport.use(localStrategy);
+passport.use(githubStrategy);
 
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["profile", "user:email"] })
+);
+
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/", session: false }),
+  (req, res) => {
+    res.cookie("refreshToken", req.user.refreshToken, { httpOnly: true });
+
+    res.json({
+      accessToken: req.user.accessToken,
+      refreshToken: req.user.refreshToken,
+      userData: req.user.userData,
+    });
+  }
 );
 
 app.get(
