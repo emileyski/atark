@@ -6,9 +6,20 @@ const googleStrategy = require("./strategies/google.strategy");
 const localStrategy = require("./strategies/local.strategy");
 var cookieParser = require("cookie-parser");
 const githubStrategy = require("./strategies/github.strategy");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
 const router = require("./routes");
+const options = require("./swagger.options");
 
 const app = express();
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/auth/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 
 app.use(express.json());
 app.use(cookieParser());
