@@ -9,9 +9,19 @@ const userSchema = new Schema(
       required: true,
       default: "local",
     },
-    providerId: { type: String, required: false, unique: true },
+    providerId: {
+      type: String,
+      required: false,
+      unique: function () {
+        return this.providerName !== "local";
+      },
+    },
     displayName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     password: { type: String },
   },
   {
