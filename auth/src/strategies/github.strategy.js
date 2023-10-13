@@ -7,7 +7,7 @@ const githubStrategy = new GithubStrategy(
   {
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/github/callback",
+    callbackURL: "http://localhost:3000/api/auth/github/callback",
     session: false,
     scope: ["profile", "user:email"],
   },
@@ -16,26 +16,22 @@ const githubStrategy = new GithubStrategy(
       return done(new Error("Github profile ID not found"), null);
     }
 
-    // console.log(profile);
-    // return done(null, profile);
-
     try {
       let user = await User.findOne({ providerId: profile.id });
 
       if (user) {
-        // Если пользователь существует, обновите его данные из profile._json и сохраните в базе данных
-        user.displayName = profile.displayName;
+        user.fullName = profile.displayName;
+        user.nickname = profile.username;
         user.email = profile.emails[0].value;
-        // Дополните данными из profile._json, если это необходимо
 
         await user.save();
       } else {
         user = new User({
-          providerName: "github", // Установите соответствующий провайдер
+          providerName: "github",
           providerId: profile.id,
-          displayName: profile.displayName,
+          fullName: profile.displayName,
+          nickname: profile.username,
           email: profile.emails[0].value,
-          // Дополните данными из profile._json, если это необходимо
         });
 
         await user.save();

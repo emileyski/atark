@@ -2,6 +2,7 @@ const { Router } = require("express");
 const passport = require("passport");
 const User = require("../models/User");
 const getTokens = require("../utils");
+const signupValidation = require("../middlewares/validation/signup.validation");
 
 const router = new Router();
 
@@ -20,10 +21,17 @@ router
       });
     }
   )
-  .post("/signup", async (req, res) => {
+  .post("/signup", signupValidation(), async (req, res, next) => {
     try {
-      const { email, displayName, password } = req.body;
-      const user = new User({ email, displayName, providerName: "local" });
+      const { email, nickname, fullName, birthDate, password } = req.body;
+
+      const user = new User({
+        email,
+        fullName,
+        nickname,
+        birthDate,
+        providerName: "local",
+      });
       await user.setPassword(password);
       await user.save();
 
@@ -33,8 +41,7 @@ router
       // Регистрация выполнена успешно
       res.status(201).json({ accessToken, refreshToken, userData: user });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal Server Error" });
+      next(error);
     }
   });
 

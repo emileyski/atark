@@ -8,7 +8,7 @@ var cookieParser = require("cookie-parser");
 const githubStrategy = require("./strategies/github.strategy");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
+const errorMiddleware = require("./middlewares/error.middleware");
 const router = require("./routes");
 const options = require("./swagger.options");
 
@@ -30,7 +30,7 @@ passport.use(localStrategy);
 passport.use(githubStrategy);
 
 app.use("/api/auth", router);
-
+app.use(errorMiddleware);
 const PORT = 3000;
 
 const start = async () => {
