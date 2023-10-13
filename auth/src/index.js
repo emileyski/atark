@@ -16,7 +16,7 @@ const app = express();
 
 const specs = swaggerJsdoc(options);
 app.use(
-  "/auth/docs",
+  "/api/auth/docs",
   swaggerUi.serve,
   swaggerUi.setup(specs, { explorer: true })
 );
@@ -29,7 +29,7 @@ passport.use(googleStrategy);
 passport.use(localStrategy);
 passport.use(githubStrategy);
 
-app.use("/auth", router);
+app.use("/api/auth", router);
 
 const PORT = 3000;
 
@@ -39,7 +39,7 @@ const start = async () => {
     useUnifiedTopology: true,
   });
   app.listen(PORT, () => {
-    console.log(`Auth service is running at ${PORT}`);
+    console.log(`Auth service is running at ${PORT} (v1)`);
   });
 };
 

@@ -15,14 +15,6 @@ spec:
       containers:
         - name: auth
           image: emilevi4/atark.auth
-          env:
-            - name: MONGO_URI
-              value: "mongodb://auth-mongo-srv:27017/auth"
-            - name: JWT_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secret
-                  key: JWT_KEY
 ---
 apiVersion: v1
 kind: Service
@@ -36,4 +28,3 @@ spec:
       protocol: TCP
       port: 3000
       targetPort: 3000
-#
