@@ -3,7 +3,10 @@ import { Transform } from 'class-transformer';
 import { IsEmail, IsString, Length } from 'class-validator';
 
 export class SignInDto {
-  @ApiProperty({ description: 'The email of the user', example: 'example@example.com'})
+  @ApiProperty({
+    description: 'The email of the user',
+    example: 'example@example.com',
+  })
   @IsEmail()
   @Transform(({ value }) => value.toLowerCase())
   readonly email: string;

@@ -19,6 +19,6 @@ async function bootstrap() {
   SwaggerModule.setup('api/auth/docs', app, document);
 
   await app.listen(3000);
-  Logger.log(`😎 Application is running on port ${3000}`, `bootstrap`);
+  Logger.log(`😎 Auth service is running on port ${3000}`, `bootstrap`);
 }
 bootstrap();

@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -10,12 +11,14 @@ import { UserService } from 'src/user/user.service';
 import { JwtPayload } from 'src/core/interfaces/jwt-payload.interface';
 import { hash, verify } from 'argon2';
 import { SignInDto } from './dto/sign-in.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly usersService: UserService,
+    @Inject('AUTH_SERVICE') private readonly client: ClientProxy,
   ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<Tokens> {
@@ -23,6 +26,13 @@ export class AuthService {
     const { accessToken, refreshToken } = await this.generateTokens({
       id,
       role,
+    });
+
+    this.client.emit('user:created', {
+      id,
+      role,
+      email: signUpDto.email,
+      name: signUpDto.name,
     });
 
     return { accessToken, refreshToken };
