@@ -28,12 +28,12 @@ export class AuthService {
       role,
     });
 
-    this.client.emit('user:created', {
-      id,
-      role,
-      email: signUpDto.email,
-      name: signUpDto.name,
-    });
+    // this.client.emit('user:created', {
+    //   id,
+    //   role,
+    //   email: signUpDto.email,
+    //   name: signUpDto.name,
+    // });
 
     return { accessToken, refreshToken };
   }

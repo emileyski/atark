@@ -25,7 +25,7 @@ export class User {
   // @Column()
   // birthDate: Date;
 
-  @Column({ default: Roles.CUSTOMER })
+  @Column({ default: Roles.USER })
   role: Roles;
 
   @Index('IDX_TOKEN')

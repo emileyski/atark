@@ -7,9 +7,15 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { OrderStatus } from './order-status.entity';
+import { OrderStatus, OrderStatusTypes } from './order-status.entity';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { Driver } from 'src/driver/entities/driver.entity';
+import { Tariff } from 'src/tariff/entities/tariff.entity';
+
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
 
 @Entity()
 export class Order {
@@ -31,9 +37,6 @@ export class Order {
   @Column({ type: 'decimal', precision: 8, scale: 2 })
   volume: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  tariff: number;
-
   @ManyToOne((type) => Customer, (customer) => customer.orders)
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
@@ -45,6 +48,16 @@ export class Order {
   @OneToMany((type) => OrderStatus, (orderStatus) => orderStatus.order)
   statuses: OrderStatus[];
 
-  @Column()
-  status: string;
+  @ManyToOne(() => Tariff)
+  @JoinColumn({ name: 'tariff_id' })
+  tariff: Tariff;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
+
+  @Column({ type: 'jsonb', nullable: false })
+  originCoordinates: Coordinates;
+
+  @Column({ type: 'jsonb', nullable: false })
+  destinationCoordinates: Coordinates;
 }

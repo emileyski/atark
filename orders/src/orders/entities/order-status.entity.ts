@@ -9,6 +9,16 @@ import {
 } from 'typeorm';
 import { Order } from './order.entity';
 
+export enum OrderStatusTypes {
+  CREATED = 'CREATED',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  DELIVERED = 'DELIVERED',
+  PAID = 'PAID',
+  COMPLETED = 'COMPLETED',
+  ARCHIVED = 'ARCHIVED',
+}
+
 @Entity()
 export class OrderStatus {
   @PrimaryGeneratedColumn()
@@ -18,7 +28,7 @@ export class OrderStatus {
   dateTime: Date;
 
   @Column()
-  type: string;
+  type: OrderStatusTypes;
 
   @ManyToOne((type) => Order, (order) => order.statuses)
   @JoinColumn({ name: 'order_id' })

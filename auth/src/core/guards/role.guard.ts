@@ -16,10 +16,10 @@ export class RoleGuard implements CanActivate {
 
     if (request?.user) {
       const user = request.user as JwtPayload;
-      
+
       return role === user.role;
     }
-    
+
     return false;
   }
 }

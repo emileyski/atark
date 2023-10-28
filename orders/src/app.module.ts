@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersModule } from './orders/orders.module';
 import { CustomerModule } from './customer/customer.module';
 import { DriverModule } from './driver/driver.module';
+import { TariffModule } from './tariff/tariff.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { DriverModule } from './driver/driver.module';
     OrdersModule,
     CustomerModule,
     DriverModule,
+    TariffModule,
   ],
 })
 export class AppModule {}
